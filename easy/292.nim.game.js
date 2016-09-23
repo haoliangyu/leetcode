@@ -9,33 +9,5 @@
  * @return {boolean}
  */
 var canWinNim = function(n) {
-
-  if (n < 4) { return true; }
-
-  var
-
-  function playGame(turn, n) {
-    if (n < 4) {
-      return turn;
-    }
-
-    if (playGame(!turn, n - 1)) {
-      return true;
-    }
-
-    if (playGame(!turn, n - 2)) {
-      return true;
-    }
-
-    if (playGame(!turn, n - 3)) {
-      return true;
-    }
-
-    return false;
-  }
-
-  return playGame(true, n);
-
+  return n % 4 !== 0;
 };
-
-console.log(canWinNim(1348820612));
