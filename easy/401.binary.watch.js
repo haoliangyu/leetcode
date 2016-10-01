@@ -15,27 +15,31 @@
 //     The hour must not contain a leading zero, for example "01:00" is not valid, it should be "1:00".
 //     The minute must be consist of two digits and may contain a leading zero, for example "10:2" is not valid, it should be "10:02".
 
-var masks = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512];
+function placeOne(ones, hour, minute, timeSet) {
 
-function placeOne(current, ones, valueSet) {
-    if (ones < 1 && (current & 960) < 768 && (current & 63) < 60) {
-        valueSet.add(current);
+    if (hour > 11 || minute > 59) {
         return;
     }
 
-    for (var i = 0; i <= 9; i++) {
-      var mask = masks[i];
-      if (!((current & mask) >> i)) {
-          placeOne(current | mask, ones - 1, valueSet);
-      }
+    if (ones < 1) {
+        timeSet.add(hour.toString() + ':' + (minute < 10 ? ('0' + minute.toString()) : minute.toString()));
+        return;
     }
-}
 
-function format(value) {
-    var hour = (value & 960) >> 6;
-    var minute = value & 63;
-
-    return hour.toString() + ':' + (minute < 10 ? ('0' + minute.toString()) : minute.toString());
+    var mask;
+    for (var i = 0; i <= 9; i++) {
+        if (i < 4) {
+            mask = 1 << i;
+            if (!((hour & mask) >> i)) {
+                placeOne(ones - 1, hour | mask, minute, timeSet);
+            }
+        } else {
+            mask = 1 << (i - 4);
+            if (!((minute & mask) >> (i - 4))) {
+                placeOne(ones - 1, hour, minute | mask, timeSet);
+            }
+        }
+    }
 }
 
 /**
@@ -43,14 +47,9 @@ function format(value) {
  * @return {string[]}
  */
 var readBinaryWatch = function(num) {
-    var valueSet = new Set([]);
+    var timeSet = new Set([]);
 
-    placeOne(0, num, valueSet);
+    placeOne(num, 0, 0, timeSet);
 
-    var formatted = [];
-    for (let value of valueSet.values()) {
-        formatted.push(format(value));
-    }
-
-    return formatted;
+    return [...timeSet];
 };
