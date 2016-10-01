@@ -15,41 +15,33 @@
 //     The hour must not contain a leading zero, for example "01:00" is not valid, it should be "1:00".
 //     The minute must be consist of two digits and may contain a leading zero, for example "10:2" is not valid, it should be "10:02".
 
-function placeOne(ones, hour, minute, timeSet) {
-
-    if (hour > 11 || minute > 59) {
-        return;
+function bitCount(n) {
+    var count = 0;
+    while (n > 0) {
+        count = count + 1;
+        n = n & (n-1);
     }
 
-    if (ones < 1) {
-        timeSet.add(hour.toString() + ':' + (minute < 10 ? ('0' + minute.toString()) : minute.toString()));
-        return;
-    }
-
-    var mask;
-    for (var i = 0; i <= 9; i++) {
-        if (i < 4) {
-            mask = 1 << i;
-            if (!((hour & mask) >> i)) {
-                placeOne(ones - 1, hour | mask, minute, timeSet);
-            }
-        } else {
-            mask = 1 << (i - 4);
-            if (!((minute & mask) >> (i - 4))) {
-                placeOne(ones - 1, hour, minute | mask, timeSet);
-            }
-        }
-    }
+    return count;
 }
+
 
 /**
  * @param {number} num
  * @return {string[]}
  */
 var readBinaryWatch = function(num) {
-    var timeSet = new Set([]);
+    var timeSet = [];
+    var value;
 
-    placeOne(num, 0, 0, timeSet);
+    for (var h = 0; h < 12; h++) {
+        for (var m = 0; m < 60; m++) {
+            value = (h << 6) + m;
+            if (bitCount(value) === num) {
+                timeSet.push(h.toString() + ':' + (m < 10 ? ('0' + m.toString()) : m.toString()));
+            }
+        }
+    }
 
-    return [...timeSet];
+    return timeSet;
 };
