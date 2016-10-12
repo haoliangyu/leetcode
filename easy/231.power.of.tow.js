@@ -5,21 +5,5 @@
  * @return {boolean}
  */
 var isPowerOfTwo = function(n) {
-  if (n <= 0) {
-    return false;
-  }
-
-  while (n > 0) {
-    if (n === 1) {
-      return true;
-    }
-
-    if ((n & 1) === 1) {
-      return false;
-    }
-
-    n = n >> 1;
-  }
-
-  return true;
+  return n !== 0 && Math.log2(n) % 1 === 0;
 };
