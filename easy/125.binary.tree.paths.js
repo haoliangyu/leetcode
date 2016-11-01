@@ -35,7 +35,7 @@ var binaryTreePaths = function(root) {
   var node;
 
   while (nodes.length > 0) {
-    node = nodes.splice(nodes.length - 1, 1)[0];
+    node = nodes.pop();
 
     if (!node.left && !node.right) {
       paths.push(node.path);
