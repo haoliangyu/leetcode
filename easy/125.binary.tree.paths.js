@@ -12,22 +12,6 @@
 //
 // ["1->2->5", "1->3"]
 
-function findPath(paths, node, current) {
-  current += `->${node.val}`;
-
-  if (!node.left && !node.right) {
-    paths.push(current);
-  } else {
-    if (node.left) {
-      findPath(paths, node.left, current);
-    }
-
-    if (node.right) {
-      findPath(paths, node.right, current);
-    }
-  }
-}
-
 /**
  * Definition for a binary tree node.
  * function TreeNode(val) {
@@ -44,18 +28,28 @@ var binaryTreePaths = function(root) {
     return [];
   }
 
-  if (!root.left && !root.right) {
-    return [root.val.toString()];
-  }
+  root.path = root.val.toString();
 
   var paths = [];
+  var nodes = [root];
+  var node;
 
-  if (root.left) {
-    findPath(paths, root.left, root.val.toString());
-  }
+  while (nodes.length > 0) {
+    node = nodes.splice(nodes.length - 1, 1)[0];
 
-  if (root.right) {
-    findPath(paths, root.right, root.val.toString());
+    if (!node.left && !node.right) {
+      paths.push(node.path);
+    } else {
+      if (node.right) {
+        node.right.path = node.path + `->${node.right.val}`;
+        nodes.push(node.right);
+      }
+
+      if (node.left) {
+        node.left.path = node.path + `->${node.left.val}`;
+        nodes.push(node.left);
+      }
+    }
   }
 
   return paths;
