@@ -27,22 +27,19 @@ var mergeTwoLists = function(l1, l2) {
   var nodeA = l1;
   var nodeB = l2;
 
-  while (nodeA || nodeB) {
-    if (nodeA && nodeB) {
-      if (nodeA.val < nodeB.val) {
-        node.next = nodeA;
-        nodeA = nodeA.next;
-      } else {
-        node.next = nodeB;
-        nodeB = nodeB.next;
-      }
-
-      node = node.next;
+  while (nodeA && nodeB) {
+    if (nodeA.val < nodeB.val) {
+      node.next = nodeA;
+      nodeA = nodeA.next;
     } else {
-      node.next = !nodeA ? nodeB : nodeA;
-      break;
+      node.next = nodeB;
+      nodeB = nodeB.next;
     }
+
+    node = node.next;
   }
+
+  node.next = !nodeA ? nodeB : nodeA;
 
   return result.next;
 };
