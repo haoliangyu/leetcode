@@ -17,6 +17,22 @@
 //   [15,7]
 // ]
 
+function stack(levels, levelIndex, node) {
+  if (node) {
+    var level = levels[levelIndex];
+
+    if (!level) {
+      level = [];
+      levels.push(level)
+    }
+
+    level.push(node.val);
+
+    stack(levels, levelIndex + 1, node.left);
+    stack(levels, levelIndex + 1, node.right);
+  }
+}
+
 /**
  * Definition for a binary tree node.
  * function TreeNode(val) {
@@ -33,30 +49,8 @@ var levelOrder = function(root) {
     return [];
   }
 
-  var nodes = [root];
   var result = [];
-  var node, level, temp;
-
-  while (nodes.length > 0) {
-    level = [];
-    temp = [];
-
-    while (nodes.length > 0) {
-      node = nodes.shift();
-      level.push(node.val);
-
-      if (node.left) {
-        temp.push(node.left);
-      }
-
-      if (node.right) {
-        temp.push(node.right);
-      }
-    }
-
-    nodes = temp;
-    result.push(level);
-  }
+  stack(result, 0, root)
 
   return result;
 };
