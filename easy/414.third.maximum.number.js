@@ -37,11 +37,14 @@ var thirdMax = function(nums) {
     val = nums[i];
 
     if (val > result[0]) {
-      result.splice(0, 0, val);
+      result[2] = result[1];
+      result[1] = result[0];
+      result[0] = val;
     } else if (val !== result[0] && val > result[1]) {
-      result.splice(1, 0, val);
+      result[2] = result[1];
+      result[1] = val;
     } else if (val !== result[1] && val !== result[0] && val > result[2]) {
-      result.splice(2, 0, val);
+      result[2] = val;
     }
   }
 
