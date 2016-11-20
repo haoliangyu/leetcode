@@ -33,30 +33,30 @@ var levelOrderBottom = function(root) {
     return [];
   }
 
-  root.level = 0;
+  let results = [];
+  traversal([root], results);
 
-  let result = [];
-  let nodes = [root];
+  return results;
+};
 
-  while (nodes.length > 0) {
-    let node = nodes.shift();
+function traversal(nodes, results) {
+  if (nodes.length === 0) {
+    return;
+  }
 
-    if (!result[node.level]) {
-      result[node.level] = [];
-    }
+  let values = nodes.map(node => node.val);
+  results.unshift(values);
 
-    result[node.level].push(node.val);
-
+  let next = [];
+  nodes.forEach(node => {
     if (node.left) {
-      node.left.level = node.level + 1;
-      nodes.push(node.left);
+      next.push(node.left);
     }
 
     if (node.right) {
-      node.right.level = node.level + 1;
-      nodes.push(node.right);
+      next.push(node.right);
     }
-  }
+  });
 
-  return result.reverse();
-};
+  traversal(next, results);
+}
