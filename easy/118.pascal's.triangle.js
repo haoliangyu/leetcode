@@ -12,25 +12,20 @@
 // ]
 
 /**
- * @param {number} numRows
- * @return {number[][]}
+ * @param {number} rowIndex
+ * @return {number[]}
  */
-var generate = function(numRows) {
-  if (numRows < 1) { return []; }
+var getRow = function(rowIndex) {
+  if (rowIndex === 0) { return [1]; }
 
-  return triangle(2, [1], numRows, [[1]]);
-};
+  let cur = [1, 1];
+  for (let i = 1; i < rowIndex; i++) {
+    for (let j = 0, n = cur.length - 1; j < n; j++) {
+      cur[j] += cur[j + 1];
+    }
 
-function triangle(level, prev, targetLevel, results) {
-  if (level > targetLevel) { return results; }
-
-  let cur = [1];
-  for (let i = 0, n = prev.length - 1; i < n; i++) {
-    cur.push(prev[i] + prev[i + 1]);
+    cur.unshift(1);
   }
 
-  cur.push(1);
-  results.push(cur);
-
-  return triangle(level + 1, cur, targetLevel, results);
-}
+  return cur;
+};
