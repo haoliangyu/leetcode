@@ -55,7 +55,7 @@ var isValidSudoku = function(board) {
 
       for (let a = -1; a <= 1; a++) {
         for (let b = -1; b <= 1; b++) {
-          let value = board[i][j];
+          let value = board[i + a][j + b];
           if (value === '.') { continue; }
 
           if (check[value]) {
