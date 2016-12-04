@@ -18,23 +18,24 @@
      return 0;
    }
 
-   function getMinDepth(root) {
-     if (!root) {
-       return 0;
+   root.level = 1;
+   let queue = [root];
+
+   while(queue.length > 0) {
+     let node = queue.shift();
+
+     if (!node.left && !node.right) {
+       return node.level;
      }
 
-     if (root.left && root.right) {
-       let leftHeight = getMinDepth(root.left);
-       let rightHeight = getMinDepth(root.right);
-       return (leftHeight < rightHeight ? leftHeight : rightHeight) + 1;
-     } else if (!root.right && root.left) {
-       return getMinDepth(root.left) + 1;
-     } else if (root.right && !root.left) {
-       return getMinDepth(root.right) + 1;
-     } else {
-       return 1;
+     if (node.left) {
+       node.left.level = node.level + 1;
+       queue.push(node.left);
+     }
+
+     if (node.right) {
+       node.right.level = node.level + 1;
+       queue.push(node.right);
      }
    }
-
-   return getMinDepth(root);
  };
