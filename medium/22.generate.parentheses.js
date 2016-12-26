@@ -49,7 +49,7 @@ var generateParenthesis = function(n) {
     } else if (right > left) {
       current.push(')');
       right--;
-    } else if (left > 0) {
+    } else {
       current.push('(');
       left--;
     }
