@@ -17,23 +17,41 @@
 var generateParenthesis = function(n) {
 
   let allResults = [];
+  let left = n - 1;
+  let right = n;
+  let current = ['('];
+  let final = Array(n).fill('(').concat(Array(n).fill(')')).join('');
 
-  function generator(current, left, right) {
+  while (true) {
     if (right === 0) {
-      allResults.push(current);
-      return;
-    }
+      let result = current.join('');
 
-    if (left > 0) {
-      generator(current + '(', left - 1, right);
-    }
+      allResults.push(result);
 
-    if (right > left) {
-      generator(current + ')', left, right - 1);
+      if (result === final) {
+        return allResults;
+      }
+
+      do {
+        if (current.pop() === ')') {
+          right++;
+
+          if (left > 0) {
+            break;
+          }
+        } else {
+          left++;
+        }
+      } while(true);
+
+      current.push('(');
+      left--;
+    } else if (right > left) {
+      current.push(')');
+      right--;
+    } else if (left > 0) {
+      current.push('(');
+      left--;
     }
   }
-
-  generator('(', n - 1, n);
-
-  return allResults;
 };
