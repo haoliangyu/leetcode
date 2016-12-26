@@ -12,16 +12,37 @@
  * @param {number} target
  * @return {number[]}
  */
-var twoSum = function(numbers, target) {
- let n = numbers.length;
+ var twoSum = function(numbers, target) {
+   let n = numbers.length;
 
- for (let i = 0; i < n; i++) {
-   for (let j = i + 1; j < n && (numbers[i] + numbers[j]) <= target; j++) {
-     if ((numbers[i] + numbers[j]) === target) {
-       return [i + 1, j + 1];
+   let binarySearch = (upper, lower, target) => {
+     while (lower + 1 < upper) {
+       let middle = (upper + lower) >> 1;
+
+       if (target < numbers[middle]) {
+         upper = middle;
+       } else {
+         lower = middle;
+       }
+     }
+
+    if (numbers[lower] === target) {
+        return lower;
+    } else if (numbers[upper] === target) {
+        return upper;
+    }
+
+     return -1;
+   };
+
+   for (let i = 0; i < n && numbers[i] <= target; i++) {
+     let searchTarget = target - numbers[i];
+     let mate = binarySearch(n - 1, i  + 1, searchTarget);
+
+     if (mate > -1) {
+       return [i + 1, mate + 1];
      }
    }
- }
 
- return [];
-};
+   return [];
+ };
