@@ -26,24 +26,28 @@
  */
 var inorderTraversal = function(root) {
 
-  let result = [];
   let current = root;
+  let result = [];
 
-  while (current) {
+  if (root === null) {
+    return result;
+  }
 
-    if (current.visited) {
+  while (current !== undefined) {
+
+    if (current.visited === true) {
       current = current.parent;
       continue;
     }
 
-    if (current.left && !current.left.visited) {
+    if (current.left !== null && current.left.visited !== true) {
       current.left.parent = current;
       current = current.left;
     } else {
       result.push(current.val);
       current.visited = true;
 
-      if (current.right && !current.right.visited) {
+      if (current.right !== null && current.right.visited !== true) {
         current.right.parent = current;
         current = current.right;
       }
