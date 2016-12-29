@@ -17,18 +17,9 @@ let romans = ['I', 'V', 'X', 'L', 'C', 'D', 'M'];
  * @return {string}
  */
 let intToRoman = num => {
-  let i = 6;
   let result = '';
 
-  if (num < 1000) {
-    i = 4;
-  } else if (num < 100) {
-    i = 2;
-  } else if (num < 1) {
-    i = 0;
-  }
-
-  for (; i >= 0 && num !== 0; i -= 2) {
+  for (let i = 6; i >= 0; i -= 2) {
     let count = (num / numberals[i]) >> 0;
 
     if (count > 8) {
