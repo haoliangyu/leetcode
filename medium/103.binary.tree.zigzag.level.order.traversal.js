@@ -38,10 +38,16 @@
    let orderRight = false;
 
    while (nodes.length > 0) {
-     let level = nodes.map(node => node.val);
+     let level = [];
 
      if (orderRight) {
-       level.reverse();
+       for (let i = nodes.length - 1; i >= 0; i--) {
+         level.push(nodes[i].val);
+       }
+     } else {
+       for (let i = 0, n = nodes.length - 1; i < n; i++) {
+         level.push(nodes[i].val);
+       }
      }
 
      results.push(level);
