@@ -39,21 +39,11 @@
 
    while (nodes.length > 0) {
      let level = [];
-
-     if (orderRight) {
-       for (let i = nodes.length - 1; i >= 0; i--) {
-         level.push(nodes[i].val);
-       }
-     } else {
-       for (let i = 0, n = nodes.length - 1; i < n; i++) {
-         level.push(nodes[i].val);
-       }
-     }
-
-     results.push(level);
-
      let next = [];
+
      for (let i = 0, n = nodes.length; i < n; i++) {
+       level.push(nodes[i].val);
+
        if (nodes[i].left) {
          next.push(nodes[i].left);
        }
@@ -62,6 +52,12 @@
          next.push(nodes[i].right);
        }
      }
+
+     if (orderRight) {
+       level.reverse();
+     }
+
+     results.push(level);
 
      nodes = next;
      orderRight = !orderRight;
