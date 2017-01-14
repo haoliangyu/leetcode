@@ -23,30 +23,6 @@
 // Follow up:
 // Could you do it in one-pass, using only O(1) extra memory and without modifying the value of the board?
 
-function counting(x, y, board) {
-  let ship = 0;
-  let preRow = x - 1;
-  let nextRow = x + 1;
-
-  if (board[x][y - 1] === 'X') {
-    ship++;
-  }
-
-  if (board[x][y + 1] === 'X') {
-    ship++;
-  }
-
-  if (board[preRow] !== undefined && board[preRow][y] === 'X') {
-    ship++;
-  }
-
-  if (board[nextRow] !== undefined && board[nextRow][y] === 'X') {
-    ship++;
-  }
-
-  return ship;
-}
-
 /**
  * @param {character[][]} board
  * @return {number}
@@ -59,16 +35,15 @@ var countBattleships = function(board) {
     return ships;
   }
 
-  for(let i = 0, n = board.length; i < n; i++) {
-    for(let j = 0, m = board[i].length; j < m; j++) {
-      if (board[i][j] === 'X') {
-        let context = counting(i, j, board);
 
-        if (context === 0) {
+  for (let i = 0, n = board.length; i < n; i++) {
+    for (let j = 0, m = board[i].length; j < m; j++) {
+      if (board[i][j] === 'X') {
+
+        if ((i === 0 || board[i - 1][j] !== 'X') && (j === 0 || board[i][j - 1] !== 'X')) {
           ships++;
-        } else if (context === 1) {
-          ships += 0.5;
         }
+
       }
     }
   }
