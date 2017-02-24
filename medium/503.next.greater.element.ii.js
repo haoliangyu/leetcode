@@ -15,39 +15,21 @@
  * @return {number[]}
  */
 let nextGreaterElements = function(nums) {
-  let i = 0;
   let n = nums.length;
+  let stack = [];
+  let larger = new Array(n).fill(-1);
 
-  let stack = nums.map((value, index) => {
-    return { index: index, value: value, visited: false };
-  });
+  for (let i = 0, n2 = n * 2; i < n2; i++) {
+    let current = nums[i % n];
 
-  while (i < n) {
-    if (!stack[0].visited) {
-      let current = stack[0];
-      let counter = 0;
+    while (stack.length > 0 && nums[stack[stack.length - 1]] < current) {
+      larger[stack.pop()] = current;
+    }
 
-      while (current.value >= stack[0].value && counter < n) {
-        stack.push(stack.shift());
-        counter++;
-      }
-
-      if (counter === n) {
-        current.larger = -1;
-      } else {
-        current.larger = stack[0].value;
-      }
-
-      current.visited = true;
-      i++;
-    } else {
-      stack.push(stack.shift());
+    if (i < n) {
+      stack.push(i);
     }
   }
 
-  stack.forEach(current => {
-    nums[current.index] = current.larger;
-  });
-
-  return nums;
+  return larger;
 };
