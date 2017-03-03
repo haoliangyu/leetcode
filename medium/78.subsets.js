@@ -21,32 +21,22 @@
  * @return {number[][]}
  */
 let subsets = function(nums) {
-  let results = [[]];
+  let results = [];
+  let n = nums.length;
+  let total = Math.pow(2, n) - 1;
 
-  if (nums.length === 0) {
-    return results;
-  }
-
-  let stack = [0];
-  let n = nums.length - 1;
-
-  while (stack.length > 0) {
+  for (let i = 0; i <= total; i++) {
     let current = [];
-    for (let i = 0, n = stack.length; i < n; i++) {
-      current.push(nums[stack[i]]);
-    }
-    results.push(current);
 
-    let last = stack[stack.length - 1];
-    if (last < n) {
-      stack.push(last + 1);
-    } else {
-      stack.pop();
-
-      if (stack[stack.length - 1] < n) {
-        stack[stack.length - 1] = stack[stack.length - 1] + 1;
+    for (let pointer = 1, j = 0; pointer <= i; j++) {
+      if ((i & pointer) !== 0) {
+        current.push(nums[j]);
       }
+
+      pointer = pointer << 1;
     }
+
+    results.push(current);
   }
 
   return results;
