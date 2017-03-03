@@ -23,20 +23,23 @@
 let subsets = function(nums) {
   let results = [];
   let n = nums.length;
+  let total = 1;
 
-  function pickOrNot(index, current) {
-    if (index !== n) {
-      pickOrNot(index + 1, current);
-
-      let picked = current.slice();
-      picked.push(nums[index]);
-      pickOrNot(index + 1, picked);
-    } else {
-      results.push(current);
-    }
+  for (let i = 1; i < n; i++) {
+    total = (total << 1) + 1;
   }
 
-  pickOrNot(0, []);
+  for (let i = 0; i <= total; i++) {
+    let current = [];
+
+    for (let j = 0; j < n; j++) {
+      if (((i >> j) & 1) === 1) {
+        current.push(nums[j]);
+      }
+    }
+
+    results.push(current);
+  }
 
   return results;
 };
