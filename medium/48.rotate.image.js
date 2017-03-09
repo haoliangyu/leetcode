@@ -16,22 +16,18 @@ let rotate = function(matrix) {
 
   for (let i = 0; i < halfSize; i++) {
     for (let j = i, m = size - i; j < m; j++) {
-      sweep(matrix, size, i, j);
+      let tempA, tempB;
+
+      tempA = matrix[j][size - i];
+      matrix[j][size - i] = matrix[i][j];
+
+      tempB = matrix[size - i][size - j];
+      matrix[size - i][size - j] = tempA;
+
+      tempA = matrix[size - j][i];
+      matrix[size - j][i] = tempB;
+
+      matrix[i][j] = tempA;
     }
   }
 };
-
-function sweep(matrix, size, i, j) {
-  let tempA, tempB;
-
-  tempA = matrix[j][size - i];
-  matrix[j][size - i] = matrix[i][j];
-
-  tempB = matrix[size - i][size - j];
-  matrix[size - i][size - j] = tempA;
-
-  tempA = matrix[size - j][i];
-  matrix[size - j][i] = tempB;
-
-  matrix[i][j] = tempA;
-}
