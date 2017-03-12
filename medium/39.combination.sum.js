@@ -22,47 +22,23 @@
  */
 let combinationSum = function(candidates, target) {
   let results = [];
-  let n = candidates.length - 1;
-  let stack = [0];
-
   candidates.sort((a, b) => a - b);
-
-  let currentSum = candidates[0];
-
-  while(stack[0] <= n) {
-
-    if (currentSum >= target) {
-      if (currentSum === target) {
-        results.push(getCombination(candidates, stack));
-      }
-
-      let lastIndex;
-
-      do {
-        lastIndex = stack.pop();
-        currentSum -= candidates[lastIndex];
-      } while (stack.length > 1 && stack[stack.length - 1] === n);
-
-      lastIndex = stack[stack.length - 1];
-
-      currentSum -= candidates[lastIndex] - candidates[lastIndex + 1];
-      stack[stack.length - 1] = lastIndex + 1;
-    } else {
-      let lastIndex = stack[stack.length - 1];
-      currentSum += candidates[lastIndex];
-      stack.push(lastIndex);
-    }
-  }
+  getCombinations(candidates, target, 0, 0, [], results);
 
   return results;
 };
 
-function getCombination(candidates, indexes) {
-  let result = [];
+function getCombinations(candidates, target, currentIndex, currentSum, current, results) {
+  for (let i = currentIndex, n = candidates.length; i < n; i++) {
+    let nextSum = currentSum + candidates[i];
 
-  for(let i = 0, n = indexes.length; i < n; i++) {
-    result.push(candidates[indexes[i]]);
+    if (nextSum === target) {
+      current.push(candidates[i]);
+      results.push(current);
+    } else if (nextSum < target) {
+      let next = current.slice();
+      next.push(candidates[i]);
+      getCombinations(candidates, target, i, nextSum, next, results);
+    }
   }
-
-  return result;
 }
