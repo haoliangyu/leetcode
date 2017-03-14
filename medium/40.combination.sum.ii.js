@@ -23,30 +23,27 @@
  * @return {number[][]}
  */
 let combinationSum2 = function(candidates, target) {
-  let results = {};
+  let results = [];
 
   candidates.sort((a, b) => a - b);
 
-  for (let i = 0, n = candidates.length; i < n; i++) {
-    getCombinations(candidates, target, i, candidates[i], [candidates[i]], results);
-  }
+  getCombinations(candidates, target, 0, 0, [], results);
 
-  let values = [];
-  for (let key in results) {
-    values.push(results[key]);
-  }
-
-  return values;
+  return results;
 };
 
 function getCombinations(candidates, target, currentIndex, currentSum, current, results) {
   if (currentSum === target) {
-    results[current] = current;
+    results.push(current);
   } else if (currentSum < target) {
-    for (let i = currentIndex + 1, n = candidates.length; i < n; i++) {
+    for (let i = currentIndex, n = candidates.length; i < n; i++) {
+      if (i > currentIndex && candidates[i] === candidates[i - 1]) {
+        continue;
+      }
+
       let next = current.slice();
       next.push(candidates[i]);
-      getCombinations(candidates, target, i, currentSum + candidates[i], next, results);
+      getCombinations(candidates, target, i + 1, currentSum + candidates[i], next, results);
     }
   }
 }
