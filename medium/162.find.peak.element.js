@@ -23,24 +23,22 @@ let findPeakElement = function(nums) {
     return nums[0] > nums[1] ? 0 : 1;
   }
 
-  if (nums[0] > nums[1]) {
-    return 0;
-  }
+  let start = 0;
+  let end = nums.length - 1;
 
-  let previous = true;
-  let next;
+  while (start + 1 < end) {
+    let middle = (start + end) >> 1;
+    let largerThanPrev = nums[middle - 1] < nums[middle];
+    let largerThanNext = nums[middle + 1] < nums[middle];
 
-  for (let i = 1, n = nums.length - 1; i < n; i++) {
-    next = nums[i] > nums[i + 1];
-
-    if (previous && next) {
-      return i;
+    if (largerThanNext && largerThanPrev) {
+      return middle;
+    } else if (largerThanNext) {
+      end = middle;
+    } else {
+      start = middle;
     }
-
-    previous = !next;
   }
 
-  if (nums[nums.length - 2] < nums[nums.length - 1]) {
-    return nums.length - 1;
-  }
+  return nums[start] > nums[end] ? start : end;
 };
