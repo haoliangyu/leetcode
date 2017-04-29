@@ -29,5 +29,5 @@ let groupAnagrams = function(strs) {
     }
   }
 
-  return dict.values();
+  return Object.values(dict);
 };
